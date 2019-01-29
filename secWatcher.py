@@ -31,6 +31,16 @@ def main():
 # our call back function; gets called anytime the switch state gets changed
 def stateChange(switch_state):
 	printWithDate("Switch state: " + str(switch_state))
+	counter=0
+	while(counter < 2): #check a few times that the switch hasn't changed state
+		printWithDate("Counter: " + str(counter))
+		if(GPIO.input(switch_state) != 1): #assert that the switch actually remained closed for a bit (closed = powered = 1), change this if you need to assert the switch was opened (change to 0 = opened = unpowered)
+			printWithDate("Just detected noise on switch; ignoring.")
+			return
+		counter+=1
+		time.sleep(0.005)
+	
+	#ok, we've confirmed it's not noise
 	sendEmail(); #send an email! Or do whatever else you want here... just don't be stupid (ex: don't use this to trigger a call to the police, or lock in a burgler)
 
 # helper to log our prints with the date
