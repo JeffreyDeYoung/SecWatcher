@@ -51,12 +51,13 @@ def printWithDate(toPrint):
 #def send email
 def sendEmail():
 	email_from = "<email username here>" #email username
-	server = smtplib.SMTP('smtp.gmail.com', 587)#if your using gmail to send this; if not, use your own server name/port
+	server = smtplib.SMTP('smtp.sendgrid.net', 587)#if your using sendgrid to send this; if not, use your own server name/port
 	server.starttls() #use TLS encryption to connect to the mail server
 	server.login(email_from, "<email password here>")
-    msg = MIMEMultipart()
+   	msg = MIMEMultipart()
  	msg_str = str("Security Alarm Triggered! " + str(datetime.datetime.now())) #subject/message for the email
 	msg.attach(MIMEText(msg_str, 'plain'))
+	msg.add_header('From', email_from)
 	msg['Subject'] = msg_str 
 	to = [] # declare that we're using an array for the "TO:" list
 	to.append('<email address one here>')
